@@ -64,6 +64,7 @@ public class LocationUtil {
             initLocation();
         }
         return mInstance;
+
     }
 
     public static Location getLocation() {
