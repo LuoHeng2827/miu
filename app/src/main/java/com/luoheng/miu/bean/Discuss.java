@@ -19,6 +19,7 @@ public class Discuss implements Serializable {
 
     public Discuss(String authorMail,String title, String content, Date createDate){
         this.authorMail = authorMail;
+        this.title=title;
         this.content=content;
         this.createDate=createDate;
         this.likeCount=0;

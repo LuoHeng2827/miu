@@ -33,9 +33,7 @@ public class SignUpActivity extends AppCompatActivity {
     EditText passwordsInput2;
     @BindView(R.id.sign_up_button)
     Button signUpButton;
-    private Handler handler;
-    private static final int SHOW_DATA_MESSAGE =1;
-    private static final int SHOW_ERROR_MESSAGE =2;
+    private Handler handler=new Handler();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,21 +42,6 @@ public class SignUpActivity extends AppCompatActivity {
         initView();
     }
     private void initView(){
-        handler=new Handler(new Handler.Callback() {
-            @Override
-            public boolean handleMessage(Message msg) {
-                if(msg.what== SHOW_DATA_MESSAGE){
-                    String data=(String)msg.obj;
-                    Toast.makeText(getApplicationContext(),data,Toast.LENGTH_LONG).show();
-                    return true;
-                }
-                else if(msg.what==SHOW_ERROR_MESSAGE){
-                    Toast.makeText(getApplicationContext(),"请联系管理员",Toast.LENGTH_LONG).show();
-                    return true;
-                }
-                return false;
-            }
-        });
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,30 +63,32 @@ public class SignUpActivity extends AppCompatActivity {
                             try{
                                 JSONObject object=new JSONObject(response.body().string());
                                 int result=object.getInt("result");
-                                Message message=new Message();
-                                message.what=SHOW_DATA_MESSAGE;
-                                message.obj=object.getString("data");
-                                handler.sendMessage(message);
+                                toast(object.getString("data"));
                                 if(result==200){
                                     finish();
-                                }
-                                else{
-                                    Toast.makeText(getApplicationContext(),object.getString("data"),Toast.LENGTH_LONG).show();
                                 }
                             }catch(JSONException e){
                                 e.printStackTrace();
                             }
                         }
                         else{
-                            Message message=new Message();
-                            message.what=SHOW_ERROR_MESSAGE;
-                            handler.sendMessage(message);
+                            toast("请联系管理员");
                         }
                     }
                 });
             }
         });
     }
+
+    private void toast(String msg){
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(getApplicationContext(),msg,Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
     private boolean basicVerify(){
         String mail=mailInput.getText().toString();
         String name=nameInput.getText().toString();

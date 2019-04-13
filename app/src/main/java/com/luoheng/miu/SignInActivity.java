@@ -36,23 +36,7 @@ public class SignInActivity extends AppCompatActivity {
     Button signInButton;
     @BindView(R.id.sign_up_link)
     TextView signUpLink;
-    private static final int SHOW_DATA_MESSAGE =1;
-    private static final int SHOW_ERROR_MESSAGE =2;
-    private Handler handler=new Handler(new Handler.Callback(){
-        @Override
-        public boolean handleMessage(Message msg) {
-            if(msg.what== SHOW_DATA_MESSAGE){
-                String data=(String)msg.obj;
-                Toast.makeText(getApplicationContext(),data,Toast.LENGTH_LONG).show();
-                return true;
-            }
-            else if(msg.what==SHOW_ERROR_MESSAGE){
-                Toast.makeText(getApplicationContext(),"请联系管理员",Toast.LENGTH_LONG).show();
-                return true;
-            }
-            return false;
-        }
-    });
+    private Handler handler=new Handler();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,24 +63,21 @@ public class SignInActivity extends AppCompatActivity {
                         Gson gson=new Gson();
                         if(response.code()==200){
                             try{
-                                JSONObject jsonObject=new JSONObject(response.body().string());
-                                int result=jsonObject.getInt("result");
+                                JSONObject object=new JSONObject(response.body().string());
+                                int result=object.getInt("result");
                                 if(result==Configures.RESULT_OK){
-                                    User user=gson.fromJson(jsonObject.getString("data"),User.class);
+                                    User user=gson.fromJson(object.getString("data"),User.class);
                                     startMailActivity(user);
                                 }
                                 else{
-                                    Message message=new Message();
-                                    message.what= SHOW_DATA_MESSAGE;
-                                    message.obj=jsonObject.getString("data");
-                                    handler.sendMessage(message);
+                                    toast(object.getString("data"));
                                 }
                             }catch(JSONException e){
                                 e.printStackTrace();
                             }
                         }
                         else{
-                            handler.sendEmptyMessage(SHOW_ERROR_MESSAGE);
+                            toast("请联系管理员");
                         }
                     }
                 });
@@ -109,6 +90,16 @@ public class SignInActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void toast(String msg){
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(getApplicationContext(),msg,Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
     private void startMailActivity(User user){
         Intent intent=new Intent(this,MainActivity.class);
         intent.putExtra("user",user);

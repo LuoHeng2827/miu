@@ -11,6 +11,7 @@ public class Configures {
     public static final String URL_PUSH_DISCUSS=HOST+"MiuBackstage/discuss/push";
     public static final String URL_DISCUSS_DO_LIKE=HOST+"MiuBackstage/discuss/doLike";
     public static final String URL_DISCUSS_COMMENT=HOST+"MiuBackstage/discuss/comment";
+    public static final String URL_DISCUSS_GET_COMMENTS=HOST+"MiuBackstage/discuss/getComments";
 
     /**
      * @see #RESULT_ACTIVE_USER_FAILED 表示用户激活的token错误或者已经激活

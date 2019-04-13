@@ -52,8 +52,6 @@ public class OwnerFragment extends Fragment {
     public static final int REQUEST_PHOTO_CUT=2;
     private Handler handler;
     private Gson gson=new Gson();
-    public static final int SHOW_DATA_MESSAGE =1;
-    public static final int SHOW_ERROR_MESSAGE =2;
 
 
     @Nullable
@@ -70,21 +68,7 @@ public class OwnerFragment extends Fragment {
     private void init(){
         activity=(AppCompatActivity)getActivity();
         user=MainActivity.user;
-        handler=new Handler(new Handler.Callback() {
-            @Override
-            public boolean handleMessage(Message msg) {
-                if(msg.what== SHOW_DATA_MESSAGE){
-                    String data=(String)msg.obj;
-                    Toast.makeText(getContext(),data,Toast.LENGTH_LONG).show();
-                    return true;
-                }
-                else if(msg.what==SHOW_ERROR_MESSAGE){
-                    Toast.makeText(getContext(),"请联系管理员",Toast.LENGTH_LONG).show();
-                    return true;
-                }
-                return false;
-            }
-        });
+        handler=new Handler();
         userPic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -115,6 +99,15 @@ public class OwnerFragment extends Fragment {
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    private void toast(String msg){
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(getContext(),msg,Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     public void refreshData(){
@@ -150,10 +143,7 @@ public class OwnerFragment extends Fragment {
                 HttpUtil.doImageFormPost(Configures.URL_UPLOAD_PIC, forms,"pic", fileList, new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
-                        Message message=new Message();
-                        message.what=SHOW_DATA_MESSAGE;
-                        message.obj="请连接网络重试";
-                        handler.sendMessage(message);
+                        toast("请连接网络重试");
                     }
 
                     @Override
@@ -162,12 +152,9 @@ public class OwnerFragment extends Fragment {
                             try{
                                 JSONObject object=new JSONObject(response.body().string());
                                 int result=object.getInt("result");
+                                toast(object.getString("data"));
                                 if(result==200){
-                                    Message message=new Message();
-                                    message.what=SHOW_DATA_MESSAGE;
-                                    message.obj=object.getString("data");
                                     user.setPicUrl(object.getString("pic"));
-                                    handler.sendMessage(message);
                                     handler.post(new Runnable() {
                                         @Override
                                         public void run() {
@@ -175,15 +162,12 @@ public class OwnerFragment extends Fragment {
                                         }
                                     });
                                 }
-                                else{
-                                    Message message=new Message();
-                                    message.what=SHOW_DATA_MESSAGE;
-                                    message.obj=object.getString("data");
-                                    handler.sendMessage(message);
-                                }
                             }catch(JSONException e){
                                 e.printStackTrace();
                             }
+                        }
+                        else{
+                            toast("请联系管理员");
                         }
                     }
                 });

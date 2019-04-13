@@ -5,10 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ShowDiscussActivity">
-    <FrameLayout
+    <LinearLayout
         android:id="@+id/discussShowLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:orientation="vertical"
         app:layout_constraintVertical_weight="1"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/commentEdit"
@@ -16,8 +17,8 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/commentView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-    </FrameLayout>
+            android:layout_height="match_parent" />
+    </LinearLayout>
 
     <EditText
         android:id="@+id/commentEdit"

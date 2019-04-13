@@ -79,13 +79,11 @@ public class WriteDiscussActivity extends AppCompatActivity implements EasyPermi
     protected Icarus icarus;
     private ImagePopoverImpl imagePopover;
     private static final int REQUEST_PERMISSION=2;
-    private Handler handler;
+    private Handler handler=new Handler();
     private User user;
     private String[] perms={Manifest.permission.READ_EXTERNAL_STORAGE};
     private static final int REQUEST_CHOOSE_PHOTO=1;
     private static final int REQUEST_PHOTO_CUT=2;
-    private static final int SHOW_DATA_MESSAGE =1;
-    private static final int SHOW_ERROR_MESSAGE =2;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -104,21 +102,6 @@ public class WriteDiscussActivity extends AppCompatActivity implements EasyPermi
 
     private void init(){
         setSupportActionBar(toolbar);
-        handler=new Handler(new Handler.Callback() {
-            @Override
-            public boolean handleMessage(Message msg) {
-                if(msg.what== SHOW_DATA_MESSAGE){
-                    String data=(String)msg.obj;
-                    Toast.makeText(getApplicationContext(),data,Toast.LENGTH_LONG).show();
-                    return true;
-                }
-                else if(msg.what==SHOW_ERROR_MESSAGE){
-                    Toast.makeText(getApplicationContext(),"请联系管理员",Toast.LENGTH_LONG).show();
-                    return true;
-                }
-                return false;
-            }
-        });
         Typeface iconfont = Typeface.createFromAsset(getAssets(), "Simditor.ttf");
         webView.addJavascriptInterface(new JavaScriptLocalObj(),"local_obj");
         TextViewToolbar toolbar =new TextViewToolbar();
@@ -149,15 +132,13 @@ public class WriteDiscussActivity extends AppCompatActivity implements EasyPermi
                 if(EasyPermissions.hasPermissions(getApplicationContext(),perms))
                     openAlbum();
                 else {
-                    Message message=new Message();
-                    message.what=SHOW_DATA_MESSAGE;
-                    message.obj="需要授予权限";
-                    handler.sendMessage(message);
+                    toast("需要授予权限");
                 }
             }
         });
         icarus.render();
     }
+
 
     private void openAlbum(){
         Intent intent=new Intent(Intent.ACTION_GET_CONTENT);
@@ -241,10 +222,7 @@ public class WriteDiscussActivity extends AppCompatActivity implements EasyPermi
             HttpUtil.doImageFormPost(Configures.URL_UPLOAD_DISCUSS, forms,"images", imageFileList, new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
-                    Message message=new Message();
-                    message.what=SHOW_DATA_MESSAGE;
-                    message.obj="请连接网络重试";
-                    handler.sendMessage(message);
+                    toast("请连接网络重试");
                 }
 
                 @Override
@@ -253,11 +231,7 @@ public class WriteDiscussActivity extends AppCompatActivity implements EasyPermi
                         try{
                             JSONObject object=new JSONObject(response.body().string());
                             int result=object.getInt("result");
-                            String data=object.getString("data");
-                            Message message=new Message();
-                            message.what=SHOW_DATA_MESSAGE;
-                            message.obj=data;
-                            handler.sendMessage(message);
+                            toast(object.getString("data"));
                             if(result==200){
                                 File cache=getExternalCacheDir();
                                 for(File file:cache.listFiles()){
@@ -278,11 +252,19 @@ public class WriteDiscussActivity extends AppCompatActivity implements EasyPermi
                         }
                     }
                     else{
-                        handler.sendEmptyMessage(SHOW_ERROR_MESSAGE);
+                        toast("请联系管理员");
                     }
                 }
             });
         }
+    }
+    private void toast(String msg){
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(getApplicationContext(),msg,Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     @Override

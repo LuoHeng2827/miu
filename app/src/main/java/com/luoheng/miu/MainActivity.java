@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 case R.id.navigation_discuss:
                     if(discussFragment==null){
-                        discussFragment=DiscussFragment.newInstant(user);
+                        discussFragment=new DiscussFragment();
                         transaction.add(R.id.first_content,discussFragment);
                     }
                     transaction.show(discussFragment);

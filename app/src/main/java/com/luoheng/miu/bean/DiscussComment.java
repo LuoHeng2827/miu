@@ -1,12 +1,14 @@
 package com.luoheng.miu.bean;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class DiscussComment {
+public class DiscussComment implements Serializable {
     private String discussId;
     private String userMail;
     private String content;
     private Date createDate;
+    private String userName;
 
     public DiscussComment() {
     }
@@ -48,5 +50,13 @@ public class DiscussComment {
 
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

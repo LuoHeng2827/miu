@@ -3,7 +3,6 @@ package com.luoheng.miu;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -27,6 +26,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.luoheng.miu.bean.Discuss;
 import com.luoheng.miu.bean.DiscussImage;
@@ -67,19 +67,7 @@ public class DiscussFragment extends Fragment {
     private List<User> authorList=new ArrayList<>();
     private List<String> likedDiscussIdList=new ArrayList<>();
     private Handler handler;
-    private Gson gson=new Gson();
-    private static final int SHOW_DATA_MESSAGE =1;
-    private static final int SHOW_ERROR_MESSAGE =2;
-
-
-    public static DiscussFragment newInstant(User user){
-        Bundle bundle=new Bundle();
-        bundle.putSerializable("user",user);
-        DiscussFragment fragment=new DiscussFragment();
-        fragment.setArguments(bundle);
-        return fragment;
-    }
-
+    private Gson gson=new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
 
 
     @Nullable
@@ -89,8 +77,7 @@ public class DiscussFragment extends Fragment {
         View view=inflater.inflate(R.layout.discuss_fragment,container,false);
         ButterKnife.bind(this,view);
         ButterKnife.bind(R.layout.error_page,errorPage);
-        Bundle bundle=getArguments();
-        this.user=(User)bundle.getSerializable("user");
+        user=MainActivity.user;
         init();
         refreshData();
         return view;
@@ -105,21 +92,7 @@ public class DiscussFragment extends Fragment {
                 refreshData();
             }
         });
-        handler=new Handler(new Handler.Callback() {
-            @Override
-            public boolean handleMessage(Message msg) {
-                if(msg.what== SHOW_DATA_MESSAGE){
-                    String data=(String)msg.obj;
-                    Toast.makeText(getContext(),data,Toast.LENGTH_LONG).show();
-                    return true;
-                }
-                else if(msg.what==SHOW_ERROR_MESSAGE){
-                    Toast.makeText(getContext(),"请联系管理员",Toast.LENGTH_LONG).show();
-                    return true;
-                }
-                return false;
-            }
-        });
+        handler=new Handler();
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         errorPage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,12 +129,10 @@ public class DiscussFragment extends Fragment {
                         int result=object.getInt("result");
                         if(result==200){
                             JSONObject data=object.getJSONObject("data");
-                            String s=data.getString("discussList");
-                            List<Discuss> d=gson.fromJson(s,List.class);
-                            Log.d(TAG, "onResponse: "+discussList.size());
                             discussList.clear();
                             authorList.clear();
                             likedDiscussIdList.clear();
+                            Log.d(TAG, "onResponse: "+data.getString("discussList"));
                             discussList.addAll(gson.fromJson(data.getString("discussList"),
                                     new TypeToken<List<Discuss>>(){}.getType()));
                             authorList.addAll(gson.fromJson(data.getString("authorList"),
@@ -171,6 +142,8 @@ public class DiscussFragment extends Fragment {
                             handler.postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
+                                    if(errorPage.getVisibility()==View.VISIBLE)
+                                        errorPage.setVisibility(View.INVISIBLE);
                                     discussAdapter.notifyDataSetChanged();
                                     if(refreshLayout.isRefreshing())
                                         refreshLayout.setRefreshing(false);
@@ -178,19 +151,24 @@ public class DiscussFragment extends Fragment {
                             },1000);
                         }
                         else{
-                            String data=object.getString("data");
-                            Message message=new Message();
-                            message.what=SHOW_DATA_MESSAGE;
-                            message.obj=data;
-                            handler.sendMessage(message);
+                            toast(object.getString("data"));
                         }
                     }catch(JSONException e){
                         e.printStackTrace();
                     }
                 }
                 else{
-                    handler.sendEmptyMessage(SHOW_ERROR_MESSAGE);
+                    toast("请联系管理员");
                 }
+            }
+        });
+    }
+
+    private void toast(String msg){
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(getContext(),msg,Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -267,12 +245,8 @@ public class DiscussFragment extends Fragment {
                     HttpUtil.doFormPost(Configures.URL_DISCUSS_DO_LIKE, forms, new Callback() {
                         @Override
                         public void onFailure(Call call, IOException e) {
-                            Message message=new Message();
-                            message.what=SHOW_DATA_MESSAGE;
-                            message.obj="请连接网络重试";
-                            handler.sendMessage(message);
+                            toast("请连接网络重试");
                         }
-
                         @Override
                         public void onResponse(Call call, Response response) throws IOException {
                             if(response.code()==200){
@@ -290,10 +264,7 @@ public class DiscussFragment extends Fragment {
                                         });
                                     }
                                     else{
-                                        Message message=new Message();
-                                        message.what=SHOW_DATA_MESSAGE;
-                                        message.obj=object.getString("data");
-                                        handler.sendMessage(message);
+                                        toast(object.getString("data"));
                                     }
                                 }catch(JSONException e){
                                     e.printStackTrace();
@@ -315,9 +286,11 @@ public class DiscussFragment extends Fragment {
                 List<ImageView> imageViewList=new ArrayList<>();
                 Discuss discuss=discussList.get(i);
                 User author=authorList.get(i);
-                Glide.with(getContext())
-                        .load(user.getPicUrl())
-                        .into(itemViewHolder.pic);
+                if(author.getPicUrl()!=null&&!author.getPicUrl().equals("")){
+                    Glide.with(getContext())
+                            .load(author.getPicUrl())
+                            .into(itemViewHolder.pic);
+                }
                 itemViewHolder.userName.setText(author.getName());
                 itemViewHolder.discussTitle.setText(discuss.getTitle());
 
