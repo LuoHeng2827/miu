@@ -2,9 +2,7 @@ package com.luoheng.miu;
 
 import android.util.Log;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,12 +11,12 @@ import java.util.Map;
 import okhttp3.Callback;
 import okhttp3.Cookie;
 import okhttp3.CookieJar;
-import okhttp3.Headers;
 import okhttp3.HttpUrl;
+import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.Response;
+import okhttp3.RequestBody;
 
 
 public class HttpUtil {
@@ -46,6 +44,30 @@ public class HttpUtil {
         Request request=new Request.Builder()
                 .url(url)
                 .get()
+                .build();
+        client.newCall(request).enqueue(callback);
+    }
+
+    public static void doImageFormPost(String url, Map<String, String> formParams,String filesKey,
+                               List<File> fileList, Callback callback){
+        client=getInstant();
+        if(formParams==null)
+            formParams=new HashMap<>();
+        if(fileList==null)
+            fileList=new ArrayList<>();
+        if(filesKey ==null)
+            filesKey="images";
+        MultipartBody.Builder multipartBodyBuilder=new MultipartBody.Builder();
+        for(String key:formParams.keySet()){
+            multipartBodyBuilder.addFormDataPart(key,formParams.get(key));
+        }
+        for(File file:fileList){
+            RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), file);
+            multipartBodyBuilder.addFormDataPart(filesKey,file.getName(),requestBody);
+        }
+        Request request=new Request.Builder()
+                .url(url)
+                .post(multipartBodyBuilder.build())
                 .build();
         client.newCall(request).enqueue(callback);
     }

@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/user_pic"
@@ -14,7 +16,9 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toStartOf="@id/user_name"
         app:layout_constraintBottom_toTopOf="@id/line1"
-        app:riv_oval="true" />
+        app:riv_oval="true"
+        app:riv_border_width="1dp"
+        app:riv_border_color="@color/black"/>
 
     <TextView
         android:id="@+id/user_name"
@@ -31,12 +35,12 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         app:layout_constraintTop_toBottomOf="@id/user_pic"
-        app:layout_constraintBottom_toTopOf="@id/title"
+        app:layout_constraintBottom_toTopOf="@id/discuss_title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <TextView
-        android:id="@+id/title"
+        android:id="@+id/discuss_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textStyle="bold"
@@ -49,13 +53,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"/>
     <TextView
-        android:id="@+id/content"
+        android:id="@+id/discuss_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/view_text_size"
         android:text="内容"
         android:layout_margin="@dimen/item_view_size"
-        app:layout_constraintTop_toBottomOf="@id/title"
+        android:maxLines="2"
+        app:layout_constraintTop_toBottomOf="@id/discuss_title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"/>
@@ -64,13 +69,15 @@
         android:id="@+id/image1"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:src="@mipmap/ic_launcher"
-        android:layout_marginTop="@dimen/item_view_size"
         android:layout_marginStart="@dimen/view_margin"
-        app:layout_constraintTop_toBottomOf="@id/content"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="@dimen/item_view_size"
+        android:background="@color/transparent"
+        android:src="@mipmap/ic_launcher"
+        app:layout_constraintDimensionRatio="4:3"
         app:layout_constraintEnd_toStartOf="@id/image2"
-        app:layout_constraintDimensionRatio="5:3"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/discuss_content"
+        tools:srcCompat="@null" />
     <ImageView
         android:id="@+id/image2"
         android:layout_width="0dp"
@@ -78,10 +85,12 @@
         android:src="@mipmap/ic_launcher"
         android:layout_marginTop="@dimen/item_view_size"
         android:layout_marginStart="@dimen/item_view_size"
-        app:layout_constraintTop_toBottomOf="@id/content"
+        app:layout_constraintTop_toBottomOf="@id/discuss_content"
         app:layout_constraintStart_toEndOf="@id/image1"
         app:layout_constraintEnd_toStartOf="@id/image3"
-        app:layout_constraintDimensionRatio="5:3"/>
+        app:layout_constraintDimensionRatio="4:3"
+        android:background="@color/transparent"
+        tools:srcCompat="@null"/>
     <ImageView
         android:id="@+id/image3"
         android:layout_width="0dp"
@@ -90,10 +99,12 @@
         android:layout_marginStart="@dimen/item_view_size"
         android:layout_marginEnd="@dimen/view_margin"
         android:layout_marginTop="@dimen/item_view_size"
-        app:layout_constraintTop_toBottomOf="@id/content"
+        app:layout_constraintTop_toBottomOf="@id/discuss_content"
         app:layout_constraintStart_toEndOf="@id/image2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintDimensionRatio="5:3"/>
+        app:layout_constraintDimensionRatio="4:3"
+        android:background="@color/transparent"
+        tools:srcCompat="@null"/>
     <View
         android:id="@+id/line2"
         android:layout_width="match_parent"
@@ -115,7 +126,7 @@
         app:layout_constraintTop_toBottomOf="@id/line2" />
 
     <TextView
-        android:id="@+id/like_number"
+        android:id="@+id/like_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="0"
@@ -137,7 +148,7 @@
         app:layout_constraintHorizontal_bias="0.7"
         />
     <TextView
-        android:id="@+id/message_number"
+        android:id="@+id/comment_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="0"

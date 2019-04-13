@@ -8,11 +8,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.ContentLoadingProgressBar;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -143,11 +141,11 @@ public class HomeFragment extends Fragment {
                             mUnitAdapter.setOver();
                         }
                     }
-                },2000);
+                },1000);
             }
         });
         //setRefreshing(true);
-        refreshData("1");
+        //refreshData("1");
     }
 
 
@@ -192,7 +190,7 @@ public class HomeFragment extends Fragment {
             }
             else{
                 View view=LayoutInflater.from(mContext)
-                        .inflate(R.layout.footer_item_unit_,viewGroup,false);
+                        .inflate(R.layout.footer_item,viewGroup,false);
                 footViewHolder=new FootViewHolder(view);
                 return footViewHolder;
             }

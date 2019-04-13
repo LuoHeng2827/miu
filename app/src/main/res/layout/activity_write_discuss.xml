@@ -27,7 +27,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintHorizontal_weight="1"
-        android:focusable="false"
         android:textSize="@dimen/view_text_size"
         android:maxLines="1"
         android:layout_margin="@dimen/view_margin"
@@ -40,9 +39,9 @@
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/view_margin"
         app:layout_constraintTop_toBottomOf="@id/title"
-        app:layout_constraintBottom_toTopOf="@id/scrollView"/>
+        app:layout_constraintBottom_toTopOf="@id/discussShowLayout"/>
     <HorizontalScrollView
-        android:id="@+id/scrollView"
+        android:id="@+id/discussShowLayout"
         style="@style/EditorIcon"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -62,8 +61,25 @@
                 android:textSize="@dimen/text_icon_size"
                 android:gravity="center"/>
             <TextView
+                android:id="@+id/button_align_left"
                 style="@style/EditorIcon"
-                android:text="@string/icon_bold" />
+                android:text="@string/icon_align_left"
+                android:textSize="@dimen/text_icon_size"
+                android:gravity="center"/>
+
+            <TextView
+                android:id="@+id/button_align_center"
+                style="@style/EditorIcon"
+                android:text="@string/icon_align_center"
+                android:textSize="@dimen/text_icon_size"
+                android:gravity="center"/>
+
+            <TextView
+                android:id="@+id/button_align_right"
+                style="@style/EditorIcon"
+                android:text="@string/icon_align_right"
+                android:textSize="@dimen/text_icon_size"
+                android:gravity="center"/>
         </LinearLayout>
     </HorizontalScrollView>
 </android.support.constraint.ConstraintLayout>

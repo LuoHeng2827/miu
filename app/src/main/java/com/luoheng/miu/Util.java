@@ -1,6 +1,7 @@
 package com.luoheng.miu;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.ContentUris;
 import android.content.Context;
@@ -11,6 +12,8 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+
+import pub.devrel.easypermissions.EasyPermissions;
 
 public class Util {
     private static final String TAG = "Util";
@@ -73,5 +76,14 @@ public class Util {
         }
         return path;
     }
+
+    public static void requestPermissions(Activity activity, String[] perms,int requestCode){
+        if(!EasyPermissions.hasPermissions(activity,perms)){
+            EasyPermissions.requestPermissions(activity,"",requestCode);
+        }
+    }
+
+
+
 
 }

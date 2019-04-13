@@ -5,11 +5,12 @@
     android:orientation="vertical"
     android:background="@color/black_transparent">
 
-    <ImageView
-        android:layout_width="wrap_content"
+    <android.support.v4.widget.ContentLoadingProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@mipmap/loading"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center_horizontal" />
 
     <TextView
         android:layout_width="wrap_content"

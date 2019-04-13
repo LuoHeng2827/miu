@@ -69,6 +69,7 @@
         android:id="@+id/passwords_input1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:inputType="textPassword"
         app:layout_constraintTop_toTopOf="@id/passwords1_view"
         app:layout_constraintBottom_toBottomOf="@id/passwords1_view"
         app:layout_constraintStart_toEndOf="@id/passwords1_view"
@@ -89,6 +90,7 @@
         android:id="@+id/passwords_input2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:inputType="textPassword"
         app:layout_constraintTop_toTopOf="@id/passwords2_view"
         app:layout_constraintBottom_toBottomOf="@id/passwords2_view"
         app:layout_constraintStart_toEndOf="@id/passwords2_view"
@@ -96,7 +98,7 @@
         android:layout_marginStart="@dimen/view_margin"
         android:layout_marginEnd="@dimen/view_margin"/>
     <Button
-        android:id="@+id/signUpButton"
+        android:id="@+id/sign_up_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:minHeight="0dp"

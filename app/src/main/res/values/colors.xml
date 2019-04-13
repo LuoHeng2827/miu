@@ -10,4 +10,5 @@
     <color name="tab_press">#3f50b7</color>
     <color name="tab_normal">#737373</color>
     <color name="black_transparent">#78000000</color>
+    <color name="transparent">#00000000</color>
 </resources>
