@@ -1,70 +1,90 @@
 package com.luoheng.miu;
 
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
+
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.RecyclerView;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+
+import android.os.Bundle;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-
-import com.luoheng.miu.bean.Unit;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class HomeFragment extends Fragment {
     private static final String TAG = "HomeFragment";
-    @BindView(R.id.city_button)
-    Button cityButton;
-    @BindView(R.id.recyclerView)
-    RecyclerView recyclerView;
-    @BindView(R.id.include_error_page)
-    View errorPage;
-    @BindView(R.id.include_search_layout)
-    View searchLayout;
-    @BindView(R.id.search_edit)
-    EditText searchEdit;
-    @BindView(R.id.error_msg_tv)
-    TextView errorMsg;
-    Context mContext;
-    List<Unit> mUnitList=new ArrayList<>();
-    static Handler handler=null;
-    String city;
+
+    private static final String[][] websiteUrls=
+    {
+        {"大麦", "https://m.damai.cn/damai/category/index.html"},
+        {"永乐", "https://m.228.cn/category/"},
+        {"趣票", "https://m.qupiaowang.com/infor/list-85.html"},
+        {"聚橙", "https://m.juooo.com/Show/showsLibrary?cid=-1&caid=35"}
+    };
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.home_fragment,container,false);
-        ButterKnife.bind(this,view);
-        ButterKnife.bind(R.layout.search_layout,searchLayout);
-        ButterKnife.bind(R.layout.error_page,errorPage);
-        city="北京";
-        init();
         return view;
     }
 
 
-
-
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        TabLayout websites_tabs = view.findViewById(R.id.websites_tab);
+        ViewPager websites_viewpager = view.findViewById(R.id.websites_viewpager);
+        websites_viewpager.setOffscreenPageLimit(3);
+        List<String> titlesList = new ArrayList<>();
+        List<WebsiteFragment> fragmentsList = new ArrayList<>();
+
+        for (int i = 0; i < 4; i++)
+        {
+            titlesList.add(websiteUrls[i][0]);
+            fragmentsList.add(WebsiteFragment.NewInstance(websiteUrls[i][1]));
+        }
+
+        MyAdapter myAdapter = new MyAdapter(getActivity().getSupportFragmentManager(), titlesList, fragmentsList);
+        websites_viewpager.setAdapter(myAdapter);
+
+        websites_tabs.setupWithViewPager(websites_viewpager,false);
+
+        super.onViewCreated(view, savedInstanceState);
     }
 
-    private void init() {
-        handler = new Handler();
-    }
 
+    class MyAdapter extends FragmentPagerAdapter {
+        private List<String> titleList;
+        private List<WebsiteFragment> fragmentList;
+
+        public MyAdapter(FragmentManager fm, List<String> titleList, List<WebsiteFragment> fragmentList) {
+            super(fm);
+            this.titleList = titleList;
+            this.fragmentList = fragmentList;
+        }
+
+        @Override
+        public android.support.v4.app.Fragment getItem(int position) {
+            return fragmentList.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return titleList.size();
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return titleList.get(position);
+        }
+    }
 }
