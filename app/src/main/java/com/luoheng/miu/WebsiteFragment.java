@@ -82,8 +82,14 @@ public class WebsiteFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
+
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
         web_container.removeAllViews();     //  释放 webview 占用的内存防止 OOM，实际效果好像还可以
         webView.destroy();
-
     }
 }

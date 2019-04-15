@@ -9,6 +9,7 @@ public class DiscussComment implements Serializable {
     private String content;
     private Date createDate;
     private String userName;
+    private String userPic;
 
     public DiscussComment() {
     }
@@ -58,5 +59,13 @@ public class DiscussComment implements Serializable {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public String getUserPic() {
+        return userPic;
+    }
+
+    public void setUserPic(String userPic) {
+        this.userPic = userPic;
     }
 }

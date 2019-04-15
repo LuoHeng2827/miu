@@ -216,7 +216,7 @@ public class ShowDiscussActivity extends AppCompatActivity {
                 SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 ItemViewHolder holder=(ItemViewHolder)viewHolder;
                 Glide.with(getApplicationContext())
-                        .load(user.getPicUrl())
+                        .load(discussComment.getUserPic())
                         .into(holder.userPic);
                 holder.userName.setText(discussComment.getUserName());
                 holder.commentContent.setText(discussComment.getContent());

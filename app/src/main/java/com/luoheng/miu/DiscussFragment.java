@@ -132,7 +132,6 @@ public class DiscussFragment extends Fragment {
                             discussList.clear();
                             authorList.clear();
                             likedDiscussIdList.clear();
-                            Log.d(TAG, "onResponse: "+data.getString("discussList"));
                             discussList.addAll(gson.fromJson(data.getString("discussList"),
                                     new TypeToken<List<Discuss>>(){}.getType()));
                             authorList.addAll(gson.fromJson(data.getString("authorList"),
@@ -257,9 +256,7 @@ public class DiscussFragment extends Fragment {
                                         handler.post(new Runnable() {
                                             @Override
                                             public void run() {
-                                                viewHolder.likeCountView.setImageResource(R.mipmap.liked);
-                                                viewHolder.likeCount.setText(Integer.parseInt(viewHolder.likeCount
-                                                        .getText().toString())+1+"");
+                                                refreshData();
                                             }
                                         });
                                     }
@@ -291,6 +288,7 @@ public class DiscussFragment extends Fragment {
                             .load(author.getPicUrl())
                             .into(itemViewHolder.pic);
                 }
+                Log.d(TAG, "onBindViewHolder: "+author.getPicUrl());
                 itemViewHolder.userName.setText(author.getName());
                 itemViewHolder.discussTitle.setText(discuss.getTitle());
 
@@ -327,6 +325,7 @@ public class DiscussFragment extends Fragment {
                 }
                 itemViewHolder.likeCount.setText(discuss.getLikeCount()+"");
                 itemViewHolder.commentCount.setText(discuss.getCommentCount()+"");
+                itemViewHolder.likeCountView.setImageResource(R.mipmap.like);
                 for(String di:likedDiscussId){
                     if(discuss.getId().equals(di)){
                         itemViewHolder.likeCountView.setImageResource(R.mipmap.liked);

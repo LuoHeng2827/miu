@@ -92,7 +92,7 @@ public class WriteDiscussActivity extends AppCompatActivity implements EasyPermi
         ButterKnife.bind(this);
         requestPermission();
         Intent intent=getIntent();
-        user=(User)intent.getSerializableExtra("user");
+        user=MainActivity.user;
         init();
     }
 
