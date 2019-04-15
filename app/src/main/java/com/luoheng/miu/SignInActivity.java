@@ -55,7 +55,7 @@ public class SignInActivity extends AppCompatActivity {
                 HttpUtil.doFormPost(Configures.URL_SIGN_IN, forms, new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
-                        Toast.makeText(getApplicationContext(),"请连接网络重试",Toast.LENGTH_LONG).show();
+                        toast("请连接网络重试");
                     }
 
                     @Override

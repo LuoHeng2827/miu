@@ -13,7 +13,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,7 +23,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -284,11 +282,8 @@ public class DiscussFragment extends Fragment {
                 Discuss discuss=discussList.get(i);
                 User author=authorList.get(i);
                 if(author.getPicUrl()!=null&&!author.getPicUrl().equals("")){
-                    Glide.with(getContext())
-                            .load(author.getPicUrl())
-                            .into(itemViewHolder.pic);
+                    Util.loadImageFromUrl(getContext(),author.getPicUrl(),itemViewHolder.pic);
                 }
-                Log.d(TAG, "onBindViewHolder: "+author.getPicUrl());
                 itemViewHolder.userName.setText(author.getName());
                 itemViewHolder.discussTitle.setText(discuss.getTitle());
 
@@ -307,9 +302,7 @@ public class DiscussFragment extends Fragment {
                             break;
                         DiscussImage discussImage=discussImageList.get(j);
                         if(j<discussImageList.size()){
-                            Glide.with(getContext())
-                                    .load(discussImage.getImageUrl())
-                                    .into(imageViewList.get(j));
+                            Util.loadImageFromUrl(getContext(),discussImage.getImageUrl(),imageViewList.get(j));
                         }
                         else{
                             imageViewList.get(j).setVisibility(View.GONE);

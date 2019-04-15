@@ -18,6 +18,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.luoheng.miu.bean.User;
 import com.makeramen.roundedimageview.RoundedImageView;
@@ -111,9 +113,7 @@ public class OwnerFragment extends Fragment {
     }
 
     public void refreshData(){
-        Glide.with(this)
-                .load(user.getPicUrl())
-                .into(userPic);
+        Util.loadImageFromUrl(getContext(),user.getPicUrl(),userPic);
         userName.setText(user.getName());
     }
 

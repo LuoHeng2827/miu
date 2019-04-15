@@ -12,6 +12,11 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 
 import pub.devrel.easypermissions.EasyPermissions;
 
@@ -55,6 +60,16 @@ public class Util {
         }
         Log.d(TAG, "handleImageFromAlbumAboveApi19: "+imagePath);
         return imagePath;
+    }
+
+    public static void loadImageFromUrl(Context context, String url, ImageView view){
+        RequestOptions options=new RequestOptions()
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true);
+        Glide.with(context)
+                .load(url)
+                .apply(options)
+                .into(view);
     }
 
     public static String handleImageFromAlbumBeforeApi19(Context context,Intent data){

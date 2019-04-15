@@ -20,7 +20,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -35,7 +34,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -215,9 +213,7 @@ public class ShowDiscussActivity extends AppCompatActivity {
                 DiscussComment discussComment=(DiscussComment)discussCommentList.get(i);
                 SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 ItemViewHolder holder=(ItemViewHolder)viewHolder;
-                Glide.with(getApplicationContext())
-                        .load(discussComment.getUserPic())
-                        .into(holder.userPic);
+                Util.loadImageFromUrl(getApplicationContext(),discussComment.getUserPic(),holder.userPic);
                 holder.userName.setText(discussComment.getUserName());
                 holder.commentContent.setText(discussComment.getContent());
                 holder.commentDate.setText(format.format(discussComment.getCreateDate()));
