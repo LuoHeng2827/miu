@@ -53,6 +53,7 @@ public class OwnerFragment extends Fragment {
     public static final int REQUEST_CHOOSE_PHOTO=1;
     public static final int REQUEST_PHOTO_CUT=2;
     private Handler handler;
+    private Uri cropFileUri;
     private Gson gson=new Gson();
 
 
@@ -94,8 +95,9 @@ public class OwnerFragment extends Fragment {
         intent.putExtra("outputY", 250);//剪裁后Y的像素
         intent.putExtra("noFaceDetection", true);
         intent.putExtra("return-data", false);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(
-                new File(activity.getExternalCacheDir(), new Date().getTime()+".jpg")));
+        cropFileUri=Uri.fromFile(
+                new File(activity.getExternalCacheDir(), new Date().getTime()+".jpg"));
+        intent.putExtra(MediaStore.EXTRA_OUTPUT,cropFileUri );
         try {
             startActivityForResult(intent, REQUEST_PHOTO_CUT);
         }catch (Exception e){
@@ -137,7 +139,7 @@ public class OwnerFragment extends Fragment {
                 Map<String,String> forms=new HashMap<>();
                 forms.put("mail",user.getMail());
                 forms.put("passwords",user.getPasswords());
-                File pic=new File(data.getData().getPath());
+                File pic=new File(cropFileUri.getPath());
                 List<File> fileList=new ArrayList<>();
                 fileList.add(pic);
                 HttpUtil.doImageFormPost(Configures.URL_UPLOAD_PIC, forms,"pic", fileList, new Callback() {
