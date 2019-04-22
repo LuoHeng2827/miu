@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,12 +13,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.luoheng.miu.bean.User;
 import com.makeramen.roundedimageview.RoundedImageView;
@@ -48,6 +45,16 @@ public class OwnerFragment extends Fragment {
     RoundedImageView userPic;
     @BindView(R.id.userName)
     TextView userName;
+    @BindView(R.id.userMail)
+    TextView userMail;
+    @BindView(R.id.accountSetting)
+    Button accountSetting;
+    @BindView(R.id.myDiscuss)
+    Button myDiscuss;
+    @BindView(R.id.myDoLike)
+    Button myDoLike;
+    @BindView(R.id.myComments)
+    Button myComments;
     private User user;
     private AppCompatActivity activity;
     public static final int REQUEST_CHOOSE_PHOTO=1;
@@ -72,13 +79,37 @@ public class OwnerFragment extends Fragment {
         activity=(AppCompatActivity)getActivity();
         user=MainActivity.user;
         handler=new Handler();
-        userPic.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        ClickListener clickListener=new ClickListener();
+        userPic.setOnClickListener(clickListener);
+        accountSetting.setOnClickListener(clickListener);
+        myDiscuss.setOnClickListener(clickListener);
+        myDoLike.setOnClickListener(clickListener);
+        myComments.setOnClickListener(clickListener);
+    }
+
+    class ClickListener implements View.OnClickListener{
+        @Override
+        public void onClick(View v) {
+            if(v.getId()==R.id.userPic){
                 openAlbum();
             }
-        });
+            else if(v.getId()==R.id.accountSetting){
+                Intent intent=new Intent(getContext(),AccountSettingActivity.class);
+                startActivity(intent);
+            }
+            else if(v.getId()==R.id.myDiscuss){
+                Intent intent=new Intent(getContext(),MyDiscussActivity.class);
+                startActivity(intent);
+            }
+            else if(v.getId()==R.id.myDoLike){
+                //
+            }
+            else if(v.getId()==R.id.myComments){
+                //
+            }
+        }
     }
+
     public void cutImage(Uri uri) {
         Intent intent = new Intent("com.android.camera.action.CROP");
         intent.setDataAndType(uri,"image/*");
@@ -117,6 +148,7 @@ public class OwnerFragment extends Fragment {
     public void refreshData(){
         Util.loadImageFromUrl(getContext(),user.getPicUrl(),userPic);
         userName.setText(user.getName());
+        userMail.setText(user.getMail());
     }
 
     private void openAlbum(){
@@ -134,7 +166,7 @@ public class OwnerFragment extends Fragment {
                 }
             }
         }
-        else if(requestCode==REQUEST_PHOTO_CUT){
+        else {
             if(resultCode==RESULT_OK){
                 Map<String,String> forms=new HashMap<>();
                 forms.put("mail",user.getMail());

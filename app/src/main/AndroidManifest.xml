@@ -25,7 +25,7 @@
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden"
-            android:windowSoftInputMode="adjustUnspecified|stateHidden"></activity>
+            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
         <activity android:name=".DaMaiVerifyActivity" />
         <activity
             android:name=".WriteDiscussActivity"
@@ -45,7 +45,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ShowDiscussActivity"></activity>
+        <activity android:name=".ShowDiscussActivity" />
+        <activity android:name=".AccountSettingActivity" />
+        <activity android:name=".MyDiscussActivity"></activity>
     </application>
 
 </manifest>

@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -66,6 +67,7 @@ public class DiscussFragment extends Fragment {
     private List<String> likedDiscussIdList=new ArrayList<>();
     private Handler handler;
     private Gson gson=new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+    private DisCussFilter disCussFilter;
 
 
     @Nullable
@@ -136,6 +138,10 @@ public class DiscussFragment extends Fragment {
                                     new TypeToken<List<User>>(){}.getType()));
                             likedDiscussIdList.addAll(gson.fromJson(data.getString("likedDiscussIdList"),
                                     new TypeToken<List<String>>(){}.getType()));
+                            Log.d(TAG, "onResponse: "+discussList.size());
+                            if(disCussFilter!=null)
+                                disCussFilter.filter(discussList,authorList,likedDiscussIdList);
+                            Log.d(TAG, "onResponse: "+discussList.size());
                             handler.postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
@@ -383,5 +389,13 @@ public class DiscussFragment extends Fragment {
                 footerTv.setVisibility(View.VISIBLE);
             }
         }
+    }
+
+    interface DisCussFilter{
+        void filter(List<Discuss> discussList,List<User> authorList,List<String> likedDiscussIdList);
+    }
+
+    public void setDisCussFilter(DisCussFilter disCussFilter) {
+        this.disCussFilter = disCussFilter;
     }
 }

@@ -12,6 +12,9 @@ public class Configures {
     public static final String URL_DISCUSS_DO_LIKE=HOST+"MiuBackstage/discuss/doLike";
     public static final String URL_DISCUSS_COMMENT=HOST+"MiuBackstage/discuss/comment";
     public static final String URL_DISCUSS_GET_COMMENTS=HOST+"MiuBackstage/discuss/getComments";
+    public static final String URL_ACCOUNT_SETTING=HOST+"MiuBackstage/user/accountSetting";
+    public static final String URL_GET_LIKED_DISCUSS=HOST+"MiuBackstage/user/accountSetting";
+    public static final String URL_MY_COMMENTS=HOST+"MiuBackstage/user/myComments";
 
     /**
      * @see #RESULT_ACTIVE_USER_FAILED 表示用户激活的token错误或者已经激活

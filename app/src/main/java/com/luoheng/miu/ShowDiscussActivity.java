@@ -147,9 +147,7 @@ public class ShowDiscussActivity extends AppCompatActivity {
                     try{
                         JSONObject object=new JSONObject(response.body().string());
                         int result=object.getInt("result");
-                        if(result==200){
-                            String s=object.getString("data");
-                            Log.d(TAG, "onResponse: "+s);
+                        if(result==Configures.RESULT_OK){
                             discussCommentList.clear();
                             List<DiscussComment> l=gson.fromJson(object.getString("data"),
                                     new TypeToken<List<DiscussComment>>(){}.getType());

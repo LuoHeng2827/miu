@@ -28,9 +28,19 @@
         android:layout_margin="@dimen/item_view_size"
         android:text="名字"
         android:textSize="@dimen/view_text_size"
-        app:layout_constraintBottom_toBottomOf="@id/userPic"
         app:layout_constraintStart_toEndOf="@id/userPic"
-        app:layout_constraintTop_toTopOf="@id/userPic" />
+        app:layout_constraintTop_toTopOf="@id/userPic"
+        app:layout_constraintBottom_toTopOf="@id/userMail"/>
+    <TextView
+        android:id="@+id/userMail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/item_view_size"
+        android:text="注册邮箱"
+        android:textSize="@dimen/view_text_size"
+        app:layout_constraintStart_toEndOf="@id/userPic"
+        app:layout_constraintTop_toBottomOf="@id/userName"
+        app:layout_constraintBottom_toBottomOf="@id/userPic"/>
     <View
         android:id="@+id/line1"
         android:layout_width="match_parent"
@@ -41,5 +51,52 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="@dimen/view_margin"/>
-
+    <Button
+        android:id="@+id/accountSetting"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="账户设置"
+        android:textSize="@dimen/view_text_size"
+        android:background="@null"
+        app:layout_constraintTop_toBottomOf="@id/line1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textAlignment="textStart"
+        android:layout_marginStart="@dimen/item_view_size"/>
+    <Button
+        android:id="@+id/myDiscuss"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="我的帖子"
+        android:textSize="@dimen/view_text_size"
+        android:background="@null"
+        app:layout_constraintTop_toBottomOf="@id/accountSetting"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textAlignment="textStart"
+        android:layout_marginStart="@dimen/item_view_size"/>
+    <Button
+        android:id="@+id/myDoLike"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="我的点赞"
+        android:textSize="@dimen/view_text_size"
+        android:background="@null"
+        app:layout_constraintTop_toBottomOf="@id/myDiscuss"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textAlignment="textStart"
+        android:layout_marginStart="@dimen/item_view_size"/>
+    <Button
+        android:id="@+id/myComments"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="我的帖子"
+        android:textSize="@dimen/view_text_size"
+        android:background="@null"
+        app:layout_constraintTop_toBottomOf="@id/myDoLike"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textAlignment="textStart"
+        android:layout_marginStart="@dimen/item_view_size"/>
 </android.support.constraint.ConstraintLayout>
